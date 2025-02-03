@@ -1,11 +1,11 @@
 "use client"
 
 import { useSearchParams, useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-export default function Summary() {
+function SummaryContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const formData = Object.fromEntries(searchParams.entries())
@@ -69,3 +69,11 @@ export default function Summary() {
     </div>
   )
 }
+
+export default function Summary() {
+    return (
+      <Suspense fallback={<p className="text-lg text-center">Loading summary...</p>}>
+        <SummaryContent />
+      </Suspense>
+    );
+  }

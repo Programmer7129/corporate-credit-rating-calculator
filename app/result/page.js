@@ -1,29 +1,29 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useSearchParams } from "next/navigation"
-import { motion } from "framer-motion"
-import { Loader2 } from "lucide-react"
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 
-export default function Result() {
-  const searchParams = useSearchParams()
-  const prediction = searchParams.get("prediction")
+function ResultContent() {
+  const searchParams = useSearchParams();
+  const prediction = searchParams.get("prediction");
 
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
-    return () => clearTimeout(timer)
-  }, [])
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!prediction || prediction === "N/A") {
     return (
       <div className="flex flex-col items-center justify-center h-64">
         <p className="text-lg">No prediction found. Please go back and submit the form again.</p>
       </div>
-    )
+    );
   }
 
   if (isLoading) {
@@ -32,7 +32,7 @@ export default function Result() {
         <Loader2 className="h-8 w-8 animate-spin" />
         <p className="mt-4 text-lg">Calculating credit rating...</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -56,5 +56,13 @@ export default function Result() {
           : "High risk of default."}
       </p>
     </motion.div>
-  )
+  );
+}
+
+export default function Result() {
+  return (
+    <Suspense fallback={<p className="text-lg text-center">Loading result...</p>}>
+      <ResultContent />
+    </Suspense>
+  );
 }
