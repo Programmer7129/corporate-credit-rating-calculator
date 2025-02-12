@@ -1,5 +1,7 @@
 "use client"
 
+const API_URL = "https://corporate-credit-rating-model.onrender.com/predict";
+
 import { useSearchParams, useRouter } from "next/navigation"
 import { useState, Suspense } from "react"
 import { Button } from "@/components/ui/button"
@@ -18,7 +20,7 @@ function SummaryContent() {
     setError(null)
 
     try {
-        const response = await fetch("/api/predict", {
+        const response = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
